@@ -7,6 +7,7 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/mysql"
 	"github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/spf13/cobra"
+	"log"
 	"os"
 )
 
@@ -23,24 +24,24 @@ func init() {
 
 			dbDriver, err := mysql.WithInstance(db, &mysql.Config{})
 			if err != nil {
-				fmt.Printf("Error creating instance %v\n", err)
+				log.Fatalf("Error creating instance %v\n", err)
 				return
 			}
 
 			fileSource, err := (&file.File{}).Open(os.Getenv("MIGRATIONS_DIR"))
 			if err != nil {
-				fmt.Printf("Error opening migration %v\n", err)
+				log.Fatalf("Error opening migration %v\n", err)
 				return
 			}
 
 			m, err := migrate.NewWithInstance("file", fileSource, os.Getenv("DATABASE_NAME"), dbDriver)
 			if err != nil {
-				fmt.Printf("Error creating migration instance %v\n", err)
+				log.Fatalf("Error creating migration instance %v\n", err)
 				return
 			}
 
 			if err = m.Down(); err != nil {
-				fmt.Printf("Error running down migration %v\n", err)
+				log.Fatalf("Error running down migration %v\n", err)
 				return
 			}
 
