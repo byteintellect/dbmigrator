@@ -40,7 +40,7 @@ func init() {
 				return
 			}
 
-			if err = m.Down(); err != nil {
+			if err = m.Down(); err != nil && err.Error() != "no change" {
 				log.Fatalf("Error running down migration %v\n", err)
 				return
 			}
