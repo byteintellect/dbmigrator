@@ -11,9 +11,7 @@ import (
 
 func Open() *sql.DB {
 	databaseDsn := os.Getenv("DATABASE_DSN")
-	if databaseDsn != "" {
-
-	} else {
+	if databaseDsn == "" {
 		var databasePort int64 = 3306
 		var err error
 		port, ok := os.LookupEnv("DATABASE_PORT")
@@ -27,7 +25,7 @@ func Open() *sql.DB {
 		databasePassword := os.Getenv("DATABASE_PASSWORD")
 		databaseHost := os.Getenv("DATABASE_HOST")
 		databaseUserName := os.Getenv("DATABASE_USER_NAME")
-		databaseDsn = fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?multiStatements=true&parseTime=true",
+		databaseDsn = fmt.Sprintf("%s:%s@tcp(%s:%d)/%v?multiStatements=true&parseTime=true",
 			databaseUserName,
 			databasePassword,
 			databaseHost,
